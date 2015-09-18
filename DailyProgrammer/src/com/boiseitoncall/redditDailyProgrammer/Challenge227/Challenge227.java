@@ -16,7 +16,7 @@ import java.util.List;
  * @author JasonRobinson
  */
 public class Challenge227 {
-
+    public static int numDistanceCalcs=0;
     /**Description
      * My grandmother and I are moving to a new neighborhood. The houses haven't
      * yet been built, but the map has been drawn. We'd like to live as close
@@ -55,74 +55,218 @@ public class Challenge227 {
      */
     public static void main(String[] args) {
 
+        
+        
+        
+        
         if (args.length > 0) {
-            File f = new File(args[0]);
+            for(String s : args) {
 
-            if(f.exists()){
-                System.out.println("File exists");
-                
-		try {
-                    ArrayList<House> houses = getInput(f);
-                    
+                File f = new File(s);
+
+                if(f.exists()){
+                    System.out.println("File exists: \"" + f.getPath().toString() + "\"");
+
+                    try {
+                        ArrayList<double[]> houses = getInput(f);
+
+                        //spitOutHouses(houses);
+
+                        long start = System.currentTimeMillis();
+                        ArrayList<double[]> result = solveBruteForce(houses);
+                        long end = System.currentTimeMillis();
+                        double[] house1 = result.get(0);
+                        double[] house2 = result.get(1);
+                        System.out.println("Found Solution in: "+ ((end-start)/1000.0) + "seconds");
+                        System.out.println("Number of distance Calculations: " + numDistanceCalcs);
+                        System.out.println("Closest Houses: (" + house1[0] + ", "+ house1[1] + ") and (" + + house2[0] + ", "+ house2[1] + ")");
+
+                        //findCorrectHouses(houses);
 
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-                
-                
-            }else{
-                System.out.println("ERROR: Argument 1:" +args[0] +" is not a file, or file not found!");
-                System.exit(-1);
+                    } catch (IOException e) {
+                            e.printStackTrace();
+                    }
+
+
+                }else{
+                    System.out.println("ERROR: Argument 1:" +args[0] +" is not a file, or file not found!");
+                    System.exit(-1);
+                }
             }
         }else {
-            System.out.println("ERROR: must supply an argument at runtime.");
+            System.out.println("ERROR: must supply at least one argument at runtime.");
             System.exit(-1);
         }
+    }
 
-    public static double distanceBetween(House x, House y) {
-        return 0.0;
+    public static double distanceSquared(double[] x, double[] y) {
+        numDistanceCalcs++;
+        double xDist = (y[0]-x[0]);
+        double yDist = (y[1]-x[1]);
+        return ((yDist*yDist) + (xDist*xDist));
     }
 
     
 
 
-    public static ArrayList<House> getInput(File f) throws IOException{
+    public static ArrayList<double[]> getInput(File f) throws IOException{
         BufferedReader br = null;
-        ArrayList<House> houses = new ArrayList<House>();
+        ArrayList<double[]> houses = new ArrayList();
         String sCurrentLine;
+        
+        br = new BufferedReader(new FileReader(f));
 
-        br = new BufferedReader(new FileReader(args[0]));
 
-        int houseNumber = 0;
         if ((sCurrentLine = br.readLine()) != null) {
             //we have a first line
             int numHouses = Integer.parseInt(sCurrentLine);
             if (numHouses > 0)
                 System.out.println("Number of Houses: " + numHouses);
+                
                 //get the rest of the houses
-            
+                int houseNumber = 0;
                 while (houseNumber < numHouses) {
                     if ((sCurrentLine = br.readLine()) != null) {
-                        houseNumber++;
-                        double newX = 0.0; double newY = 0.0;
-                        House newHouse = new House(); 
+                        //House newHouse = new House(); 
+                        double[] newHouse = new double[2];
                         String[] coords = sCurrentLine.split(" ");
-                        if (coords.length == 2) {
-                            newX = Double.parseDouble(coords[0]);
-                            newY = Double.parseDouble(coords[1]);
-                            }
-                        newHouse.setX(newX);newHouse.setY(newY);
-                        houses.add(newHouse);
+                        if (coords.length == 2) { 
+                            newHouse[0] = Double.parseDouble(coords[0]);
+                            newHouse[1] = Double.parseDouble(coords[1]);
+                            houses.add(newHouse);
+                        } else {
+                            System.out.println("Wrong number of coords on this line.");
+                            System.exit(-1);
+                        }
+                        houseNumber++;
                     } else {
                         //EOF before we expected.
                         System.out.println("ERROR: came to the end of the file before we expected at house#:" +houseNumber);
-                    }
-                    
-                }
+                        }
+                    //
+                }//end while loop on counter < numHouses
                 //done with expected # of lines.
-
             }
         return houses;
+        }
+    
+    public static void spitOutHouses(ArrayList<double[]> houses){
+        int counter = 0;
+        for(double[] d : houses) {
+            counter++;
+            System.out.println("House #" + counter + " : " + d[0] + ", " + d[1]);
+        }
     }
-}
+    
+    public static ArrayList<double[]> solveBruteForce(ArrayList<double[]> houses) {
+        double[] closest1 = new double[2];
+        double[] closest2 = new double[2];
+        ArrayList<double[]> result = new ArrayList<double[]>();
+        
+        
+        double smallest = -1.0;
+        int problemSize = houses.size();
+        
+        for(int i=0;i<problemSize;i++) {
+            for(int j=i+1;j<problemSize;j++) {
+                if(i!=j) {
+                    double temp = distanceSquared(houses.get(i),houses.get(j));
+                    if(smallest < 0.0) {
+                        closest1 = houses.get(i);
+                        closest2 = houses.get(j);
+                        smallest = temp;
+                    } else {
+                        if(smallest>temp){
+                            closest1 = houses.get(i);
+                            closest2 = houses.get(j);
+                            smallest = temp;
+                        }
+                    }
+                    
+                }//throw out the case of i ==j
+            }//end of Y loop
+        }//end of X loop
+        result.add(closest1);result.add(closest2);
+        return result;
+    }
+    
+    public static void findCorrectHouses(ArrayList<double[]> houses){
+        double[] house1 = new double[2];
+        house1[0] = 5.305665745194435;
+        house1[1] = 5.6162850431000875;
+        
+        double[] house2 = new double[2];
+        house2[0] = 5.333978668303457;
+        house2[1] = 5.698128530439982;
+        
+        
+        for (double[] d: houses){
+            if (d[0] == house1[0])
+                if (d[1] == house1[1])
+                    System.out.println("House #1 Found: (" + d[0] + ", " +d[1] + ")");
+            if (d[0] == house2[0])
+                if (d[1] == house2[1])
+                    System.out.println("House #2 Found: (" + d[0] + ", " +d[1] + ")");
+            
+        }
+    }
+
+    // 32-bits version!
+void radix_sort_3(float array[], int count)
+ {
+  int zeroes=0;
+ 
+  float temp_array[count]; // c99 only
+  float * warray = temp_array;
+ 
+  for (uint32_t radix=1;radix;radix<<=1)
+   {
+    uint32_t * iarray = (uint32_t *)array;
+ 
+    int count0=0;
+    int count1=0;
+ 
+    zeroes=0;
+    for (int j=0; j<count; ++j)
+     zeroes += !(iarray[j]&radix);
+ 
+    count1=zeroes;
+ 
+    for (int j=0; j < count; ++j)
+     if (iarray[j]&radix)
+      {
+       warray[count1]=array[j];
+       ++count1;
+      }
+     else
+      {
+       warray[count0]=array[j];
+       ++count0;
+      }
+ 
+    // we won't copy that 
+    // each time!
+    swap((float**)&warray,&array);
+   }
+  // here 'array' is restored to
+  // its original value.
+ 
+  // are there negatives?
+  //
+  if (zeroes<count)
+   {
+    // oh noes! we must swap parts
+    // before leaving!
+ 
+    memcpy( warray+(count-zeroes), array, zeroes*sizeof(float));
+ 
+    for (int d=0,j=count-1;j>=zeroes;j--,d++)
+     warray[d]=array[j];
+    memcpy( array, warray, count * sizeof(float));
+   }
+ }
+    
+    
+    
+    }

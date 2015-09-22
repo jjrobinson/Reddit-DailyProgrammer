@@ -7,9 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -211,7 +209,7 @@ public class Challenge227 {
             
         }
     }
-
+/*
     // 32-bits version!
 void radix_sort_3(float array[], int count)
  {
@@ -267,6 +265,6 @@ void radix_sort_3(float array[], int count)
    }
  }
     
-    
+ */   
     
     }

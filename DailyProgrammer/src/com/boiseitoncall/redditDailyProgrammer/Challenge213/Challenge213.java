@@ -80,7 +80,7 @@ public class Challenge213 {
             System.out.print("New Game Of Life: Starting With:\n\"");
             for(Character C : game){
                 System.out.print(C);
-            }System.out.println("\"\n\n");
+            }System.out.println("\"");
                 
             //plays the game for 25 generations
             playTheGameOfLife(game, 25);
@@ -116,7 +116,7 @@ public class Challenge213 {
             //we have a first line
             int numLines = Integer.parseInt(sCurrentLine);
             if (numLines > 0) {
-                System.out.println("Number of Games Of Life To Play: " + numLines);
+                //System.out.println("Number of Games Of Life To Play: " + numLines);
             
                 //get the rest of the words
                 int lineNumber = 0;
@@ -152,11 +152,16 @@ public class Challenge213 {
         for(int i = 0; i<iterations;i++) {
 
             ArrayList<Character> thisLoop = new ArrayList<Character>();
-            thisLoop = computeGeneration(iteration);
-            printIteration(thisLoop, i);
+            thisLoop = computeGeneration((iteration));
+            printIteration(thisLoop, (i+1));
+            if(isDeadJim(iteration, thisLoop)){
+                System.out.println(".....It's dead Jim!.....");
+                break;
+            }
             iteration.clear();iteration.addAll(thisLoop);
             thisLoop.clear();
-        }
+        }//done playing or life has not changed between generations.
+        
     }
     
     
@@ -186,23 +191,28 @@ public class Challenge213 {
             Character c = null;
             char[] window = new char[3];
             StringBuilder sb = new StringBuilder();
-            if (width<3){ //width of game is too small
-                System.exit(-1);
-            } else {//start wide enough
-                //are we at the edges? if so we need to pad either side of the window
-                if((i<1) || (i> (width-2))) {
-                    if(i==0) { //low edge case
+            //are we at the edges? if so we need to pad either side of the window
+            if((i<1) || (i> (width-2))) {
+                if(i==0) { //low edge case
+                    if(i>(width-2)) {//narrow 1 or 2 width field edge case
+                        c = calcWindow(sb.append("0").append(input.get(i)).append("0").toString());
+                    } else { //normal 0 index edge case
                         c = calcWindow(sb.append("0").append(input.get(i)).append(input.get(i+1)).toString());
-                    } else if (i> width-2) {//high edge case
-                        c = calcWindow(sb.append(input.get(i-1)).append(input.get(i)).append("0").toString());
-                    }//end edge cases
+                    }
+                } else { // high edge case
+                    if (i> width-2) {//narrow high
+                        c = calcWindow(sb.append("0").append(input.get(i)).append("0").toString());
+                    } else {
+                        //normal high index edge case
+                    c = calcWindow(sb.append(input.get(i-1)).append(input.get(i)).append("0").toString());
+                    }//end high index edge case
+                }//end edge cases
 
-                //end of section where we need to pad the ends
-                } else {//end where we are at the edges
-                //normal comparisons here
-                c = calcWindow(sb.append(input.get(i-1)).append(input.get(i)).append(input.get(i+1)).toString());
-                }
-            }//end wide enough
+            //end of section where we need to pad the ends
+            } else {//end where we are at the edges
+            //normal comparisons here
+            c = calcWindow(sb.append(input.get(i-1)).append(input.get(i)).append(input.get(i+1)).toString());
+            }
             output.add(c);
         }//end for loop
         return output;
@@ -224,5 +234,18 @@ public class Challenge213 {
         }
         return ret;
     }
-        
+
+    public static boolean isDeadJim(ArrayList<Character> child, ArrayList<Character> parent) {
+        boolean result = true;
+        if (child.size() == parent.size()){
+            for (int i = 0 ; i<child.size();i++) {
+                if(child.get(i).compareTo(parent.get(i))!=0){
+                    result = false;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+    
 }

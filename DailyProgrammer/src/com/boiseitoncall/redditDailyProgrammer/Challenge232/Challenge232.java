@@ -23,31 +23,30 @@ public class Challenge232 {
 
                 if(f.exists()){
                     System.out.println("File exists: \"" + f.getPath().toString() + "\"");
-//main body of program
+//main body of program inside args loop
     try {
 
         ArrayList<String> input = getChallengeInput(f);
-        long start = System.currentTimeMillis();
-        System.out.println("Line Character ArrayList: \""+input.toString() +"\"");
+//        long start = System.currentTimeMillis();
+//        System.out.println("Line Character ArrayList: \""+input.toString() +"\"");
 
         ArrayList<Character> charArray = parseToChars(input);
         System.out.println("Character ArrayList: \""+charArray.toString() +"\"");
 
         if (isPalendrome(charArray)) {
-            System.out.println("This is a palendrome.");
+            System.out.println("Palendrome.");
         } else {
-            System.out.println("This is NOT a palendrome.");
+            System.out.println("Not a palendrome.");
         }
         
-        long end = System.currentTimeMillis();
-        System.out.println("Completed in: " +(end-start) +"ms");
+//        long end = System.currentTimeMillis();
+//        System.out.println("Completed in: " +(end-start) +"ms");
 
 
     } catch (IOException e) {
             e.printStackTrace();
     }
-//main body of program
-
+//main body of program inside args loop
 
                 }else{
                     System.out.println("ERROR: Argument 1:" +args[0] +" is not a file, or file not found!");
@@ -111,14 +110,15 @@ public class Challenge232 {
 
     public static boolean isPalendrome(ArrayList<Character> chars){
         int length = chars.size();
-        System.out.println("Size: " + length);
+        //System.out.println("Size: " + length);
         boolean isPalendrome = false;
-        for (int i = 0; i < length; i++) {
-            
+        
+//only need to check first 1/2 against last half. N/2 comparisons.
+        for (int i = 0; i < (length/2); i++) {
             if (chars.get(i).compareTo(chars.get(length-i-1)) == 0)
                 isPalendrome = true;
             else
-                isPalendrome = false;
+                return false;
         }
         return isPalendrome;
     }

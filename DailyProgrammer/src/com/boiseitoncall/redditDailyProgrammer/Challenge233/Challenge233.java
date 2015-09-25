@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *Description
 
 Christopher has always dreamed of living in a really fancy ASCII house, and he's
-* finally decided to make it happen. He works in a hedgefund and has made a lot 
+* finally decided to make it happen. He works in a hedge fund and has made a lot 
 * of money in the Unicode markets (buying cheap Cyrillic code-points and selling
 * them to Russia), and he feels like he's finally able to afford it.
 * He hires Melinda the ASCII architect, who designs and delivers the following 
@@ -43,13 +43,13 @@ Christopher has always dreamed of living in a really fancy ASCII house, and he's
 * Formal inputs & outputs
 * Inputs
 
-* On the first line, you will recieve a number telling you how many lines the
+* On the first line, you will receive a number telling you how many lines the
 * blueprint will occupy.
-* After that, you will recieve some number of lines containing the blueprint. 
+* After that, you will receive some number of lines containing the blueprint. 
 * Each line is guaranteed to be less than 30 characters long. The only two 
 * characters allowed in the lines are spaces and asterisks, and there are a two
 * assumptions you can make regarding the asterisks:
-* The bottom line of asterisks (i.e. the "bottom floor"), will be one continous 
+* The bottom line of asterisks (i.e. the "bottom floor"), will be one continuous 
 * line of asterisks.
 * All asterisks on lines except for the bottom line are guaranteed to have an
 * asterisk directly below it. That is, there are no "free hanging" asterisks. 
@@ -94,7 +94,7 @@ Christopher has always dreamed of living in a really fancy ASCII house, and he's
 * 
 * Given that there's a random component in this challenge (where the doors and
 * windows are located), your outputs obviously don't have to match these 
-* character-by-charcter.
+* character-by-character.
 * Input 1
 * 
 * 3
@@ -145,7 +145,12 @@ Christopher has always dreamed of living in a really fancy ASCII house, and he's
 * ^ * @author JasonRobinson
  */
 public class Challenge233 {
-     public static void main(String[] args) {
+    public static void main(String[] args) {
+
+         
+         
+         
+         
         if (args.length > 0) {
             for(String s : args) {
                 File f = new File(s);
@@ -156,11 +161,12 @@ public class Challenge233 {
     try {
  
         ArrayList<ArrayList<Character>> input = getChallengeInput(f);
-		printItOut(input);
-		
-		
+        
+        ArrayList<ArrayList<Character>> expanded = new ArrayList<ArrayList<Character>>();
+        printItOut(input);
 
-		
+        
+        
 //        long start = System.currentTimeMillis();
 //        System.out.println("Line Character ArrayList: \""+input.toString() +"\"");
 
@@ -205,41 +211,43 @@ public class Challenge233 {
         if ((sCurrentLine = br.readLine()) != null) {
             //we have a first line
             int numLines = Integer.parseInt(sCurrentLine);
-            if (numLines > 0)
-                System.out.println("Number of Lines To Read In: " + numLines);
-                ArrayList<Character> line = new ArrayList<Character>();
+            if (numLines > 0) {
+                //System.out.println("Number of Lines To Read In: " + numLines);
+                
                 //get the rest of the words
                 int lineNumber = 0;
-                while (lineNumber < numLines) {
-                    if ((sCurrentLine = br.readLine()) != null) {
-						line.clear();
-                        char[] inputWords = sCurrentLine.toCharArray();
-                        for(char c: inputWords) {
-                            line.add(c);
-                        }
+                while ((sCurrentLine = br.readLine()) != null) {
+                    ArrayList<Character> line = new ArrayList<Character>();
+                    
+                    //System.out.println("New Line.");
+                    char[] inputWords = sCurrentLine.toCharArray();
+                    for(char c: inputWords) {
+                        //System.out.println("Character: \"" + c + "\"");
+                        line.add(new Character(c));
+                    }
 
-                        lineNumber++;
-						input.add(line);
-                    } else {
-                        //EOF before we expected.
-                        System.out.println("ERROR: came to the end of the file before we expected at line#:" +lineNumber);
-                        }
-                    //
+                    lineNumber++;
+                    input.add(line);
                 }//end while loop on counter < numHouses
                 //done with expected # of lines.
             }
-        return input;
+        
         }
+        return input;
+    }
 
 	
-	public static void printItOut(ArrayList<ArrayList<Character>> output){
-		for(ArrayList<Character> line : output) {
-			for(Character c : line) {
-				System.out.print(c);
-			}
-			System.out.println();
-		}
-	}
-	
-	
+    public static void printItOut(ArrayList<ArrayList<Character>> output){
+        int lineNum = 0;
+        for(ArrayList<Character> line : output) {
+            lineNum++;
+            for(Character c : line) {
+                System.out.print(c);
+            }
+            System.out.println();
+        }
+    }
+    
+    
+    
 }

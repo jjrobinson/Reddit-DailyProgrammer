@@ -1,7 +1,7 @@
 /*
  * 
  */
-package com.boiseitoncall.redditDailyProgrammer.Challenge232;
+package com.boiseitoncall.redditDailyProgrammer.Challenge232Intermediate;
 
 
 import java.io.BufferedReader;
@@ -11,10 +11,49 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- *
+ * * Description
+ * 
+ * My grandmother and I are moving to a new neighborhood. The houses haven't 
+ * yet been built, but the map has been drawn. We'd like to live as close 
+ * together as possible. She makes some outstanding cookies, and I love visiting
+ * her house on the weekend for delicious meals - my grandmother is probably 
+ * my favorite cook!
+ * Please help us find the two lots that are closest together so we can build 
+ * our houses as soon as possible.
+ * Example Input
+ * 
+ * You'll be given a single integer, N, on a line, then N lines of Cartesian 
+ * coordinates of (x,y) pairs. Example:
+ * 16 
+ * (6.422011725438139, 5.833206713226367)
+ * (3.154480546252892, 4.063265532639129)
+ * (8.894562467908552, 0.3522346393034437)
+ * (6.004788746281089, 7.071213090379764)
+ * (8.104623252768594, 9.194871763484924)
+ * (9.634479418727688, 4.005338324547684)
+ * (6.743779037952768, 0.7913485528735764)
+ * (5.560341970499806, 9.270388445393506)
+ * (4.67281620242621, 8.459931892672067)
+ * (0.30104230919622, 9.406899285442249)
+ * (6.625930036636377, 6.084986606308885)
+ * (9.03069534561186, 2.3737246966612515)
+ * (9.3632392904531, 1.8014711293897012)
+ * (2.6739636897837915, 1.6220708577223641)
+ * (4.766674944433654, 1.9455404764480477)
+ * (7.438388978141802, 6.053689746381798)
+ * Example Output
+ * 
+ * Your program should emit the two points of (x,y) pairs that are closest 
+ * together. Example:
+ * (6.625930036636377,6.084986606308885) (6.422011725438139,5.833206713226367)
+ * 
+ * Bonus
+ * 
+ * A nearly 5000 point bonus set to really stress test your approach. 
+ * http://hastebin.com/oyayubigof.lisp
  * @author JasonRobinson
  */
-public class Challenge232 {
+public class GrandmasHouseDistance {
     public static void main(String[] args) {
         if (args.length > 0) {
             for(String s : args) {

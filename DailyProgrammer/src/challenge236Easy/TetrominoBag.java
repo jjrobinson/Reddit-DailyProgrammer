@@ -1,7 +1,7 @@
 /*
  * 
  */
-package com.boiseitoncall.redditDailyProgrammer.Challenge236Easy;
+package challenge236Easy;
 
 /**
  * Description

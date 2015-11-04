@@ -1,7 +1,7 @@
 /*
  * 
  */
-package com.boiseitoncall.redditDailyProgrammer.Challenge235;
+package challenge235;
 
 /**
  *

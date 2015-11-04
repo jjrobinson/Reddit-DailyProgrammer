@@ -1,7 +1,7 @@
 /*
  * 
  */
-package com.boiseitoncall.redditDailyProgrammer.Challenge233;
+package challenge233;
 
 import java.util.Random;
 

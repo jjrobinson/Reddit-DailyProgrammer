@@ -1,7 +1,7 @@
 /*
  * 
  */
-package com.boiseitoncall.redditDailyProgrammer.Challenge234Easy;
+package challenge234Easy;
 
 import java.io.BufferedWriter;
 import java.io.File;

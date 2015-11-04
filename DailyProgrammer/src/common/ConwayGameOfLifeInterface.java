@@ -1,7 +1,7 @@
 /*
  * 
  */
-package com.boiseitoncall.redditDailyProgrammer.common;
+package common;
 
 import java.util.ArrayList;
 

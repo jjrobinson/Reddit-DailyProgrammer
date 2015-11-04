@@ -1,7 +1,7 @@
 /*
  * 
  */
-package com.boiseitoncall.redditDailyProgrammer.Challenge232Intermediate;
+package challenge232Intermediate;
 
 
 import java.io.BufferedReader;

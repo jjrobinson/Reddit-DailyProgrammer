@@ -3,6 +3,8 @@
  */
 package challenge236Easy;
 
+import java.util.Random;
+
 /**
  * Description
  * 
@@ -57,7 +59,34 @@ package challenge236Easy;
  *   * @author JasonRobinson
  */
 public class TetrominoBag {
+    static char[] letters = "OISZLJT".toCharArray();
+    static int max = 50;
+    static Random r = new Random();
+    
     public static void main(String args[]){
-        System.out.println("Hello!");
+
+        //System.out.println("String of 50 tetromino characters: ");
+        char[] chars = new char[50];
+        char prevChar = ' ';
+
+        
+        for (int i = 0; i <max;i++) {
+            chars[i] = getAChar(prevChar);
+            prevChar = chars[i];
+        }
+        System.out.println(String.valueOf(chars));
+        
+            
+    }
+    
+    public static char getAChar(char c){
+        int Low = 0;
+        int High = 7;
+        char newChar = c;
+        int R = r.nextInt(High-Low) + Low;
+        while(letters[R] == c) {
+            R = r.nextInt(High-Low) + Low;
+            }
+        return letters[R];
     }
 }

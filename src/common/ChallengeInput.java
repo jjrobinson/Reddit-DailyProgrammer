@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -18,10 +19,19 @@ import java.util.ArrayList;
 public class ChallengeInput {
     private String headerLine;
     private ArrayList<String> input;
-    File f;
+    private File f;
+    private Scanner s;
+    private String resourceName;
     
-
-    public void ChallengeInput(File inputFile){
+    public ChallengeInput(Class c, String file){
+        this.resourceName = file;
+        input = new ArrayList<String>();
+        headerLine = new String();
+        getFileAsResource(c);
+    }
+    
+    
+    public ChallengeInput(File inputFile){
         this.headerLine = null;
         this.input = new ArrayList<String>();
         this.f = inputFile;
@@ -32,6 +42,27 @@ public class ChallengeInput {
         }
     }
 
+    /**
+     * Private function to take input contents from a resource in the 
+     * project's jar / inside the '/src' directory.
+     * 
+     * @param c 
+     */
+    private void getFileAsResource(Class c){
+        try{
+            s = new Scanner(c.getResourceAsStream(resourceName)); 
+            while (s.hasNext())
+                this.input.add(s.next());
+
+            setHeaderLine(this.input.get(0));
+            
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    
     private void getChallengeInput(File f) throws IOException{
         BufferedReader br = null;
         String sCurrentLine;
@@ -57,7 +88,7 @@ public class ChallengeInput {
         return this.headerLine;
     }
 
-    public void setHeaderLine(String headerLine) {
+    private void setHeaderLine(String headerLine) {
         this.headerLine = headerLine;
     }
 

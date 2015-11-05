@@ -1,6 +1,5 @@
 package challenge237Easy;
 
-import common.ChallengeInput;
 import java.util.ArrayList;
 import java.util.Scanner;
 

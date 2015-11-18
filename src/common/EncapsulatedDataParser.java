@@ -23,14 +23,13 @@ public class EncapsulatedDataParser {
     
     public ArrayList<String> EncapsulatedDataParser(String s){
         input = s;
-        data = new ArrayList<String>();
+        this.data = new ArrayList<String>();
         parse();
-        return data;
+        return this.data;
     }
     
 
     private void parse(){
-
         this.inputParsed = input.replaceAll("[()]", "").split(",");
         if(inputParsed.length > 0){
             this.data.addAll(Arrays.asList(this.inputParsed));

@@ -61,7 +61,7 @@ public class BrokenKeyboard {
         try{
 
             
-// below is in the src/data folder
+// below input file is located in the src/data folder
             Scanner s = new Scanner(BrokenKeyboard.class.
                     getResourceAsStream("/data/english_word_list.txt")); 
 

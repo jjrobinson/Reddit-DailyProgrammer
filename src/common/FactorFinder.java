@@ -4,7 +4,7 @@
 package common;
 
 
-import java.util.TreeSet;
+import java.util.ArrayList;
 
 /**
  *
@@ -12,20 +12,20 @@ import java.util.TreeSet;
  */
 public class FactorFinder {
     private Long theNumber;
-    private TreeSet<Long> factors;
+    private ArrayList<Long> factors;
     private boolean isPrime;
 
     public FactorFinder(){
-        factors = new TreeSet<Long>();
+        factors = new ArrayList<Long>();
     }
     
     public FactorFinder(Long num){
         this.theNumber = num;
-        factors = new TreeSet<Long>();
+        factors = new ArrayList<Long>();
         findTheFactors(num);
     }
     
-    public TreeSet<Long> findTheFactors(Long n){
+    public ArrayList<Long> findTheFactors(Long n){
         factors.clear();
         factors.add(n);
         factors.add(1L);

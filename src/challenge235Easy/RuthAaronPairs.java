@@ -7,6 +7,7 @@ import common.ChallengeInput;
 import common.EncapsulatedDataParser;
 import common.FactorFinder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.TreeSet;
 
 /**
@@ -77,6 +78,8 @@ public class RuthAaronPairs {
         FactorFinder factorFinder = new FactorFinder();
         
         input = in.getInput();
+        
+        //pop off the top entry which is the problem set size
         input.remove(0);
         int header = Integer.parseInt(in.getHeaderLine());
         ArrayList<String> inputLineData = null;
@@ -88,19 +91,35 @@ try{
     if (inputLineData.size() == 2) {
         FactorFinder fr = new FactorFinder();
         FactorFinder fl = new FactorFinder();
-        TreeSet<Long> leftFactors = fr.findTheFactors(
+        ArrayList<Long> leftFactors = fr.findTheFactors(
                 Long.parseLong(inputLineData.get(0)));
-        TreeSet<Long> rightFactors = fl.findTheFactors(
+        ArrayList<Long> rightFactors = fr.findTheFactors(
                 Long.parseLong(inputLineData.get(1)));
         System.out.print("("+inputLineData.get(0)+","+inputLineData.get(1) + ")");
+        
+//        //toss the 1
+//        if(leftFactors.get(0) == 1) leftFactors.remove(0);
+//        if(rightFactors.get(0) == 1) rightFactors.remove(0);
+//        //toss the item at the end of the list if it is the number
+//        if(leftFactors.get(leftFactors.size()-1) 
+//                == Long.parseLong(inputLineData.get(0)))
+//        {
+//            leftFactors.remove(leftFactors.size()-1);
+//        }
+//        if(rightFactors.get(rightFactors.size()-1) 
+//                == Long.parseLong(inputLineData.get(1)))
+//        {
+//            rightFactors.remove(rightFactors.size()-1);
+//        }
+//        
 
         long sumLeft = sum(leftFactors);
         long sumRight = sum(rightFactors);
 
-        System.out.println("Factors for " + inputLineData.get(0));
+        System.out.println("\nFactors for " + inputLineData.get(0));
             printFactors(leftFactors);
 
-        System.out.println("Factors for " + inputLineData.get(1));
+        System.out.println("\nFactors for " + inputLineData.get(1));
             printFactors(rightFactors);
 
         if (sumLeft == sumRight)
@@ -108,6 +127,7 @@ try{
         else 
             System.out.print(" NOT VALID\r\n");
     } else {
+        //didnt' get exactly 2 values per row... something is wrong.
         System.exit(-1);
     }
 }catch(Exception e){
@@ -120,15 +140,15 @@ try{
     }//end public static void main
     
     
-    public static long sum(TreeSet<Long> t){
+    public static long sum(ArrayList<Long> t){
         long sum = 0;
         for(Long L: t)
             sum = sum + L;
         return sum;
     }
     
-    public static void printFactors(TreeSet<Long> t){
-        for (Long L : t)
+    public static void printFactors(ArrayList<Long> f){
+        for (Long L : f)
             System.out.print(L + " ");
     }
     

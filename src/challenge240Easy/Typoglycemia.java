@@ -4,7 +4,9 @@
 package challenge240Easy;
 
 import common.BagOf;
+import common.BagOfLetters;
 import common.ChallengeInput;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,7 +62,18 @@ public class Typoglycemia {
     
     
     public static void main(String args[]) {
-        ChallengeInput input = new ChallengeInput();
+        ChallengeInput in = new ChallengeInput(
+        Typoglycemia.class,"/data/challenge235Easy.txt");
+        List<String> input = in.getInput();
+        BagOfLetters punct = new BagOfLetters();
+        ArrayList<String> output = new ArrayList<String>();
+        
+        for (String s : input){
+            char[] line = s.toCharArray();
+            
+            
+            
+        }//end looping on input
         
     }
     

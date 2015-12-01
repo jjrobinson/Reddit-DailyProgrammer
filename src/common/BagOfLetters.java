@@ -4,25 +4,25 @@
 package common;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
  * @author JasonRobinson
  */
 public class BagOfLetters implements BagOf {
-    private ArrayList<Character> theBag;
-    private ArrayList<Integer> uses;
+    private ArrayList<Character> theBag = new ArrayList<Character>();
+    private ArrayList<Integer> uses = new ArrayList<Integer>();
     private boolean allowRepeats;
     private boolean allowNonAlphaNumeric;
     private boolean allowNumbers;
 
     
     public void BagOfLetters(){
-        theBag = new ArrayList<Character>();
-        uses = new ArrayList<Integer>();
-        allowRepeats = false;
+        this.theBag = new ArrayList<Character>();
+        this.uses = new ArrayList<Integer>();
+        this.allowRepeats = false;
     }
     
     /**
@@ -55,11 +55,26 @@ public class BagOfLetters implements BagOf {
         this.allowRepeats = repeats;
         this.allowNumbers = allowNumbers;
         this.allowNonAlphaNumeric = allowPunct;
-        theBag = new ArrayList<Character>();
+        this.theBag = new ArrayList<Character>();
+        this.uses = new ArrayList<Integer>();
         resetTheBagFromString(s);
     }
     
-       
+
+    /**
+     * Constructor to assemble the bag from a char[] with default allow properties.
+     * @param chars 
+     */
+    public void BagOfLetters(char[] chars){
+        this.allowRepeats = true;
+        this.allowNumbers = true;
+        this.allowNonAlphaNumeric = true;
+        this.theBag = new ArrayList<Character>();
+        this.uses = new ArrayList<Integer>();
+        resetTheBagFromCharArray(chars);
+    }
+    
+    
     /**
      * Returns theBag of Characters
      * @return 
@@ -70,8 +85,10 @@ public class BagOfLetters implements BagOf {
     
     
     /**
-     * Sets theBag to the provided list of Characters.
-     * @param l 
+     * Sets theBag to the provided list of Characters. Ignores any allow 
+     * properties for duplicates, numbers or nonAlphaNumerics.  Just a dumb 
+     * setter.
+     * @param l List of characters
      */
     public void setBag(List l){
         this.theBag.clear();
@@ -79,6 +96,35 @@ public class BagOfLetters implements BagOf {
         this.theBag.addAll(l);
         for(int i = 0; i<this.theBag.size();i++)
             this.uses.add(0);
+    }
+    
+
+    /**
+     * Sets theBag to the provided String. Ignores any allow properties
+     * for duplicates, numbers, or nonAlphaNumerics. Just a dumb setter.
+     * 
+     * For simplicity, this parses the String into a char[] and then calls 
+     * the method: setBag(char[]);
+     * 
+     * @param s String
+     */
+    public void setBag(String s){
+        char[] chars = s.toCharArray();
+        setBag(chars);
+    }
+    
+    
+    
+    /**
+     * Sets theBag to the provided char array. Ignores any allow properties
+     * for duplicates, numbers, or nonAlphaNumerics. Just a dumb setter.
+     * @param chars 
+     */
+    public void setBag(char[] chars){
+        this.theBag.clear();
+        this.uses.clear();
+        for(int i=0;i<chars.length;i++) this.theBag.add(chars[i]);
+        for(int i=0;i<this.theBag.size();i++) this.uses.add(0);
     }
     
     
@@ -211,6 +257,23 @@ public class BagOfLetters implements BagOf {
     
     
     /**
+     * Removes a random Character from the bag. Also removes the uses reference
+     * for that character. if the bag is empty returns null;
+     * @return c Character
+     */
+    public Character removeRandomCharacter(){
+        if(this.theBag.size()>1) {
+            Random r = new Random(System.currentTimeMillis());
+            int index = r.nextInt(this.theBag.size()-1);
+            this.uses.remove(index);
+            return theBag.remove(index);
+        } else {
+            return null;
+        }
+    }
+    
+    
+    /**
      * Private method to test if a character is found in the bag
      * @param testChar char
      * @return boolean
@@ -266,25 +329,51 @@ public class BagOfLetters implements BagOf {
             } else { // not a repeated character
                 addLogic(c);
             }
-        }
+        } // end loop on each char
     }
     
     
+    /**
+     * Fills theBag with characters from the char array.
+     * @param chars 
+     */
+    private void resetTheBagFromCharArray(char[] chars){
+        for(int i=0;i<chars.length;i++){            
+            Character c = (Character)chars[i];
+            if(isInTheBagOfLetters(c)){
+                //found a repeated character
+                if(this.allowRepeats)
+                    addLogic(c);
+                else
+                    break;//break out of this char's loop
+            } else { // not a repeated character
+                addLogic(c);
+            }
+        } // end loop on each char
+            
+    }
+    
+    
+    
+    
+    
+    
+    
     private void addLogic(char c){
-        //is letter?
-            //no... 
-            //is Number?
+        
+        if(Character.isLetter(c)){
+            this.theBag.add(c);
+        } else { //not a letter
+            if (Character.isDigit(c)){
                 if(this.allowNumbers)
-                //no... allow NonAlphaNumerics?
-                    if(this.allowNonAlphaNumeric){
-                        //yes... 
-                        this.addItem((Object)c);
-                    } else { //no
-                    
-                        return;
-                    }
-                    
-                        
+                    this.theBag.add(c);
+                else return;
+            } // not a letter & not a number
+
+            if(this.allowNonAlphaNumeric)
+                this.theBag.add(c);
+            else return;
+        }
     }
                     
 }

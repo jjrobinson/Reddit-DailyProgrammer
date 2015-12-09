@@ -1,0 +1,8 @@
+This project is constantly pointing to whatever project is the current "work in progress" so as such, you need to modify the build.xml to suit.
+
+Common objects & helper libraries are in src/common
+Examples:
+.src/common/BagOf.java //a generic interface for bag's of things
+.src/common/BagOfLetters.java //specific implementation for storing characters
+.src/common/ChallengeInput.java //specific to /r/DailyProgrammer style input
+.src/common/EncapsulatedDataParser.java //parses data in the "(xxxxx,yyyyy,zzzzz)" format

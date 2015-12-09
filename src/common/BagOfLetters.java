@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
- *
- * @author JasonRobinson
+ * @License Apache 2.0 http://www.apache.org/licenses/LICENSE-2.0.html
+ * 
+ * @author JasonRobinson https://github.com/jjrobinson
  */
 public class BagOfLetters implements BagOf {
     private ArrayList<Character> theBag = new ArrayList<Character>();
@@ -262,12 +263,15 @@ public class BagOfLetters implements BagOf {
      * @return c Character
      */
     public Character removeRandomCharacter(){
-        if(this.theBag.size()>1) {
+        if (this.theBag.size() == 1){
+            this.uses.remove(0);
+            return this.theBag.remove(0);
+        } else if(this.theBag.size()>2) {
             Random r = new Random(System.currentTimeMillis());
             int index = r.nextInt(this.theBag.size()-1);
             this.uses.remove(index);
             return theBag.remove(index);
-        } else {
+        } else { //empty bag
             return null;
         }
     }
@@ -310,10 +314,18 @@ public class BagOfLetters implements BagOf {
         return this.allowNonAlphaNumeric;
     }
     
+    /**
+     * Returns the size of theBag.
+     * @return 
+     */
+    public int getBagSize(){
+        return this.theBag.size();
+    }
+    
     
     /**
      * Private method to set the contents of theBag and uses to a new
-     * set of letters.
+     * set of letters from the supplied string s
      * @param s String
      */
     private void resetTheBagFromString(String s){
@@ -354,11 +366,11 @@ public class BagOfLetters implements BagOf {
     }
     
     
-    
-    
-    
-    
-    
+    /**
+     * Adds the character to the bag depending on the allow_* flags
+     * 
+     * @param c char
+     */
     private void addLogic(char c){
         
         if(Character.isLetter(c)){

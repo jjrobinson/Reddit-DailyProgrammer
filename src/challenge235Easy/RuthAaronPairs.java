@@ -73,11 +73,11 @@ public class RuthAaronPairs {
     
     public static void main(String args[]) {
         
-        ChallengeInput in = new ChallengeInput(
-                RuthAaronPairs.class,"/data/challenge235Easy.txt");
+        ChallengeInput in = new ChallengeInput();
         FactorFinder factorFinder = new FactorFinder();
         
-        input = in.getInput();
+        input = in.getInputByWords(
+                RuthAaronPairs.class,"/data/challenge235Easy.txt");
         
         //pop off the top entry which is the problem set size
         input.remove(0);

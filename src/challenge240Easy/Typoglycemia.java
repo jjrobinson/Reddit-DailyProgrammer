@@ -64,65 +64,50 @@ public class Typoglycemia {
     
     
     public static void main(String args[]) {
-        ChallengeInput in = new ChallengeInput(
-        Typoglycemia.class,"/data/challenge240Easy.txt");
-        List<String> input = in.getInput();
-        BagOfLetters punct = new BagOfLetters();
+        ChallengeInput in = new ChallengeInput();
+        List<String> input = in.getInputByWords(
+                Typoglycemia.class,"/data/challenge240Easy.txt");
         ArrayList<String> output = new ArrayList<String>();
         
-        for (String s : input){
+        for (String S : input){
             BagOfLetters bag = new BagOfLetters();
             bag.setRepeatsAllowed(true);
             Character lastChar = null;
             Character startChar = null;
-            System.out.println("Word: \"" + s + "\"");
-            if(s.length()>=4){
-                
-                //find out if last char is a punctuation
-                //if so, store it separately
-                lastChar = s.charAt(s.length()-1);
-                startChar = s.charAt(0);
-//                Pattern punctPattern = Pattern.compile("\\p{Punct}");
-//                Matcher m = punctPattern.matcher(s);
-                if(lastChar.toString().matches("\\p{Punct}")){
-                    //add the rest of the string minus the punctuation
-                    System.out.println("Found punctuation char \"" + lastChar + "\"");
-                    bag.setBag(s.substring(0, s.length()-2));
-                } else {
-                    
-                }
-                
-                
-                Character C = s.charAt(s.length()-2);
-                if(C.compareTo('\'')==0){
-//store the char before the apostrophe, the apostrophe, and the last char
-                    String endOfString = s.substring(s.length()-3);
-//found an apostrophe, send the bag all the other chars, then 
-//tack the last two on at the end.
-                    
-                } else {
-                    bag.setBag(s);
-                    
-                    }
-                
-//                System.out.print(s);
-//                System.out.print(" ");
+            Character punctAtEnd = null;
+            System.out.println("Word: \"" + S + "\"");
+            if(S.length()>=4){
+                output.add(scrambleThis(S));
             } else {
                 // smaller than 4 characters, we can't scramble the middle
                 // and have that be a different string. So just add it.
-                output.add(s);
+                output.add(S);
             }// end of string length check.
         //TODO do something with the output
             
             
-            output.
-            
-        }//end looping on input
-        
+        }//end parsing all input strings.
+
         for(String s: output){
             System.out.print(s + " ");
         }
         System.out.println();
-    }
+    }//end of main(String args[])
     
-}
+
+    public static String scrambleThis(String S){
+        String lastChar = S.substring(S.length()-1);
+        StringBuilder sb = new StringBuilder();
+        if(lastChar.matches("\\p{Punct}")){//is the last char a punctuation?
+            //add the rest of the string minus the punctuation
+            sb.append(S);
+            
+        }
+        return null;
+    }
+
+
+
+}//end of class
+
+    

@@ -4,9 +4,10 @@
 package challenge245Easy;
 
 import common.ChallengeInput;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * Description
@@ -101,87 +102,115 @@ import java.util.List;
 public class DateDilemma {
     public static ArrayList<String> input;
     public static ArrayList<String> output;
-    public static String[] daysFull = {"Monday","Tuesday","Wednesday",
-            "Thursday","Friday","Saturday","Sunday"};
-    public static String[] monthsFull = {"January","February","March","April",
-            "May","June","July","August","September","October","November",
-            "December"};
+    public static Calendar cal;
     
     
     public static void main(String[] args){
 
         ChallengeInput in = new ChallengeInput();
-        ArrayList<String> input = in.getInputByLines(
-                DateDilemma.class,"/data/DateDilemmaInput.txt");
+        ArrayList<String> input = new ArrayList<String>();
         ArrayList<String> output = new ArrayList<String>();
-        
-        for(String s : input)
-            System.out.println(s);
-        
-        parseToStandardDate();
-        
+        input = in.getInputByLines(
+                DateDilemma.class,"/data/DateDilemmaInput.txt");
+        parseToStandardDate(input);
     }
     
     
     //helper methods
     
-    
-    public static void parseToStandardDate(){
+    /**
+     * Parses the input to standard dates.  Will not handle any input other than numbers
+     */
+    public static void parseToStandardDate(ArrayList<String> input){
         for (String s : input){
+            Calendar cal = new GregorianCalendar();
             //get rid of punctuation and replace with a space
+            StringBuilder sb = new StringBuilder();
+            sb.append("Formatting: \"").append(s).append("\"");
             String[] words = s.replaceAll("[^a-zA-Z0-9 ]", " ").toLowerCase().split("\\s+");
+            System.out.println(sb.toString());
 
             
-            if(containsNonNumerics(s)){
-                convertSimpleDate(s);
+            if(!containsNonNumerics(words)){
+                cal = convertSimpleDate(words);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                System.out.println("\tFormatted Date: " + format.format(cal.getTime()));
             }else{
-                convertWrittenDates(words);
+                cal = convertWordedDate(words);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                System.out.println("\tFormatted Date: " + format.format(cal.getTime()));
             }
             
-            
         }//end loop through all input lines
+        
     }
     
-    
-    private static boolean containsNonNumerics(String s){
-        boolean containsLetters = false;
-        for (int i=0;i<s.length();i++){
-            if(Character.isLetter(s.charAt(i)))
-                containsLetters = true;
+    /**
+     * Simple helper to check to see if the input string contains anything
+     * other than numbers.
+     * @param s
+     * @return 
+     */
+    private static boolean containsNonNumerics(String[] words){
+        boolean containsNonLetters = false;
+        for(int word=0;word<words.length;word++){
+            for (int i=0;i<words[word].length();i++){
+                if(!Character.isDigit(words[word].charAt(i)))
+                    containsNonLetters = true;
+            }
         }
-        return containsLetters;
+        return containsNonLetters;
     }
     
     
-    private static void convertSimpleDate(String s){
-        int year = 0,month = 0,day = 0;
-        String[] items = s.split(" ");
-        List<String> itemList = new ArrayList<String>(Arrays.asList(items));
-        int number = Integer.parseInt(itemList.get(0));
-        if(number > 999){
-            year = number;
+    private static Calendar convertSimpleDate(String[] numbers){
+        Integer a = 0, b=0, c=0, year=0,month=0,day=0;
+        if(numbers.length == 3){
+            a = Integer.parseInt(numbers[0]);
+            b = Integer.parseInt(numbers[1]);
+            c = Integer.parseInt(numbers[2]);
+//            System.out.println("\tA: " + a + " B:  " + b + " C: " + c);
+        } else System.exit(-1);//less than three numbers, should get here.
+        
+        if(a > 999){ // must be YYYY/MM/DD
+            year = a;
+            month = b;
+            day = c;
+        } else {
+            //suspected DD/MM/YY or dd/mm/yyyy
+            day = b;
+            month = a;
+            if (c < 100) {
+                year = 2000 + c;
+            } else if (c > 999 ) {// 4 digit year
+                year = c;
+            } else //we should not get here.... 3 digit year??
+                year = c;
         }
-
+        Calendar cal = new GregorianCalendar(year,(month-1),day,0,0,0);
+        return cal;
     }
     
-    
-    private static int findYear(String[] words){
-        for(String s : words){
-            if 
+    private static Calendar convertWordedDate(String[] words){
+        String[] daysFull = {"Monday","Tuesday","Wednesday",
+        "Thursday","Friday","Saturday","Sunday"};
+        String[] monthsFull = {"January","February","March","April",
+        "May","June","July","August","September","October","November",
+        "December"};
+        String[] monthsShort = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug"
+                ,"Sep","Oct","Nov","Dec"};
+        String[] relativeTerms = {"last","next","ago","from"};
+        String[] relativeDates = {"tomorrow","yesterday"};
+        String[] relativeTimeWords = {"day","week","month","year"};
+
+        Calendar cal = new GregorianCalendar(2014,(12-1),24,0,0,0);
+        
+        if(words.length == 1){
+            String word = words[0];
+
         }
-        return 0;
+        
+        return cal;
     }
-    
-    
-    private static void convertWrittenDates(String[] words){
-        int year = 0,month = 0,day = 0;
-
-    }
-    
-    
-
-    
-    
-    
     
 }

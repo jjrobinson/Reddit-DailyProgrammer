@@ -76,7 +76,7 @@ public class ChallengeInput {
 
     /**
      * Private function to take input contents from a resource in the 
-     * project's jar / inside the '/data' directory and separate them by spaces
+     * project's jar and separate them by spaces
      * 
      * @param c 
      */
@@ -97,8 +97,7 @@ public class ChallengeInput {
   
     /**
      * Private function to take input contents from a resource in the 
-     * project's jar / inside the '/data' directory and separate them by 
-     * newLines.
+     * project's jar separate them by newLines.
      * 
      * @param c 
      */

@@ -10,7 +10,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Set;
 
 /**
  *
@@ -87,89 +89,150 @@ import java.util.Random;
 * @author JasonRobinson
  */
 public class SecretSanta {
-    ArrayList<BagOfWords> families = new ArrayList<BagOfWords>();
-    HashMap map = new HashMap();
+    public static ArrayList<BagOfWords> families = new ArrayList<BagOfWords>();
+    
+    public static HashMap matches = new HashMap();
+    public static boolean debug = false;
+    public static Random r = new Random();
+
     
     public static void main(String[] args){
         ChallengeInput in = new ChallengeInput();
         ArrayList<String> input = in.getInputByLines(SecretSanta.class, "/data/challenge247easy.txt");
-        ArrayList<BagOfWords> families = new ArrayList<BagOfWords>();
-        HashMap map = new HashMap();
         
-        
-        for(String s : input){
+        for(String s : input){//split the lines into words
             List<String> words = Arrays.asList(s.split(" "));
             BagOfWords bag = new BagOfWords();
             bag.setBag(words);
-            families.add(bag);
+            SecretSanta.families.add(bag);
+        }
+
+        for(BagOfWords b: SecretSanta.families){
+            List<String> peeps = b.getBag();
+            if (SecretSanta.debug) System.out.print("Family:");
+            List<String> family = b.getBag();
+            BagOfWords newBag = new BagOfWords();
+            newBag.setBag(family);
+            
+            for(int i=0;i<family.size();i++){//for each person in the family
+                String person = family.get(i);
+                if (SecretSanta.debug) System.out.print(" \"" + person + "\"");
+                if(i>family.size()-1)
+                    if (SecretSanta.debug) System.out.print(",");
+            }
+            if (SecretSanta.debug) System.out.println();
         }
 
         
-        for(BagOfWords b: families){
-            List<String> peeps = b.getBag();
-            System.out.print("Family:");
-            Iterator i = peeps.iterator();
-            while(i.hasNext()){
-                System.out.print(" \"" + i.next() + "\"");
-                if(i.hasNext())
-                    System.out.print(",");
-            }
-            System.out.println();
-        }
+        assignMatches();
+        printMatches();
         
-        assign(families, map);
+            
+        
         
     }//end main(String[] args)
     
-    private static void assign(ArrayList<BagOfWords> families, HashMap map){
-        ArrayList<BagOfWords> recipients = new ArrayList<BagOfWords>();
-        //clone our families to a recipients list
-        for(BagOfWords bow : families)
-            recipients.add(bow.clone());
-
-        Random r = new Random(System.currentTimeMillis());
-        for (int f = 0; f <= families.size()-1;f++){
-            int index = 0;
-            while(r.nextInt(families.size()-1) != f){
-                r.nextInt(families.size()-1);
+    
+    
+    private static void assignMatches(){
+        ArrayList<List<String>> recipients = new ArrayList<List<String>>();
+        //copy Families into recipients
+        for(int i=0;i<SecretSanta.families.size();i++){
+            List<String> fam1 = SecretSanta.families.get(i).getBag();
+            recipients.addAll(Arrays.asList(fam1));
+        }
+        
+        for(List<String> b : recipients){
+            System.out.print("Family: ");
+            for(int i = 0; i< b.size();i++){
+                System.out.print(b.get(i));
+                if (i < b.size()-1) System.out.print(", ");
             }
-            BagOfWords family = families.get(index);
-            
-            if(family.getSizeOfBag() > 0){
-                String giver = null;
-                String recipient = null;
-                for(int p =0; p<=family.getSizeOfBag()-1;p++){
-                    giver = family.getWordAtIndex(p);
-                    
-                    recipient = getRecipientForGiver(recipients, f);
+            System.out.println();
+                
+        }
+        
+        if (SecretSanta.debug) System.out.println("Assigning Matches...");
 
+        for (int fam = 0; fam < SecretSanta.families.size();fam++){
+            //loop for each family
+            BagOfWords givingFamily = SecretSanta.families.get(fam);
+
+            if (SecretSanta.debug) {
+                StringBuilder sb  = new StringBuilder();
+                sb.append("\tFinding matches for family #").append(fam).append(":");
+                List<String> peeps = givingFamily.getBag();
+                for(String s: peeps){
+                    sb.append(s).append(",");
                 }
-                    
-            }
+                System.out.println(sb.toString());
                 
-
-        }
-    }
-    
-    
-    private static String getRecipientForGiver(ArrayList<BagOfWords> recipients, int ownFamily){
-        Random r = new Random(System.currentTimeMillis());
-        int f = r.nextInt(recipients.size()-1);
-        boolean foundRecipient = false;
-        //choose a family
-        while(f != ownFamily && !foundRecipient ){
-            if(f == ownFamily && !foundRecipient){
-                f = r.nextInt(recipients.size()-1);
-                break;//exit this family and move to next
-            } else {//different family or already found a recipient
-                BagOfWords family = recipients.get(f);
-                List<Integer> uses = family.getUseCounts();
-                int p = r.nextInt(family.getSizeOfBag()-1);
-                //choose random person
+            }
             
+            if(givingFamily.getSizeOfBag() > 0){
+                String giver = "";
+                String recipient = "";
                 
+                for(int person =0; person<givingFamily.getSizeOfBag();person++){
+                    //loop for each person in a family
+                    giver = givingFamily.getWordAtIndex(person);
+                    if (SecretSanta.debug) System.out.println("\t\tFinding match for " + giver);
+                    
+                    boolean foundRecipient = false;
+
+                    //get random family index
+                    int randFam = r.nextInt(recipients.size());
+
+
+                    //choose a family
+                    while(!foundRecipient){
+                        while(fam == randFam){
+                            if (SecretSanta.debug) System.out.println("\t\t\tYou choose the same family! Trying again...");
+                            randFam = r.nextInt(recipients.size());
+                        }
+                        
+                        List<String> recievingFamily = recipients.get(randFam);
+                        int receivingFamilySize = recievingFamily.size();
+                    
+                        if (SecretSanta.debug) System.out.println("\t\t\tChoosing random family #" + randFam + " with " +receivingFamilySize+" people");
+                        if(receivingFamilySize != 1){
+                            int randPerson = (int)(System.currentTimeMillis()% receivingFamilySize);
+                            if (SecretSanta.debug) System.out.println(""
+                                    + "\t\t\t\tChoosing random person #"
+                                    +randPerson + " "
+                                    +recievingFamily.get(randPerson)
+                                    +" of family of #" 
+                                    + recievingFamily.size());
+                            recipient = recievingFamily.remove(randPerson);//remove a person from the family
+                            recipients.remove(randFam);//remove the family from the master recipients list
+                            recipients.add(recievingFamily);//add them to the end to ensure same person isn't reused
+                            foundRecipient = true;
+                        } else {//1 person family
+                            recipient = recievingFamily.get(0);
+                            recipients.remove(randFam);//remove the family from the master recipients list
+                            foundRecipient = true;
+                        }
+                        
+                    }//end loop to find a family
+                    SecretSanta.matches.put(giver, recipient);
+                    if (SecretSanta.debug) System.out.println("\t\t" + giver + "->" + recipient +"\r\n");
+                }
             }
         }
-        return "";
     }
+    
+    
+    private static void printMatches(){
+        System.out.println("\r\nMatches...");
+        
+        // Get a set of the entries
+        Set<Entry<String, String>> setMap = SecretSanta.matches.entrySet();
+        // Get an iterator
+        Iterator<Entry<String,  String>> i = setMap.iterator();
+        
+        while(i.hasNext()){
+            System.out.println(i.next());
+        }
+    }
+
 }

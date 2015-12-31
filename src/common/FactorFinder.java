@@ -14,9 +14,11 @@ public class FactorFinder {
     private Long theNumber;
     private ArrayList<Long> factors;
     private boolean isPrime;
+    private boolean addSelf;
 
     public FactorFinder(){
         factors = new ArrayList<Long>();
+        addSelf = true;
     }
     
     public FactorFinder(Long num){
@@ -27,7 +29,7 @@ public class FactorFinder {
     
     public ArrayList<Long> findTheFactors(Long n){
         factors.clear();
-        factors.add(n);
+        if(addSelf) factors.add(n);
         factors.add(1L);
         for(long test = n - 1; test >= Math.sqrt(n); test--)
             if(n % test == 0)
@@ -52,5 +54,14 @@ public class FactorFinder {
         return isPrime;
     }
 
+    public boolean allowAddSelf() {
+        return addSelf;
+    }
+
+    public void setAddSelf(boolean addSelf) {
+        this.addSelf = addSelf;
+    }
+
+    
     
 }

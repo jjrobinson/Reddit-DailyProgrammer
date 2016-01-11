@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -32,6 +34,16 @@ public class ChallengeInput {
         this.resourceName = null;
     }
     
+    /**
+     * Returns the input file as an ArrayList of char arrays (char[]).
+     * @param c
+     * @param file
+     * @return 
+     */
+    public ArrayList<char[]> getInputByCharacters(Class c, String file){
+        this.resourceName = file;
+        return getFileAsResourceByCharsNewLineDelineated(c);
+    }
     
     
     /**
@@ -112,6 +124,28 @@ public class ChallengeInput {
         } catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+
+  
+    /**
+     * Private function to take input contents from a resource in the 
+     * project's jar separate them by newLines.
+     * 
+     * @param c 
+     */
+    private ArrayList<char[]> getFileAsResourceByCharsNewLineDelineated(Class c){
+        ArrayList<char[]> charLines = new ArrayList<char[]>();
+        try{
+            s = new Scanner(c.getResourceAsStream(resourceName)); 
+            while (s.hasNextLine()){
+                char[] line = s.nextLine().toCharArray();
+                charLines.add(line);
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return charLines;
     }
 
 

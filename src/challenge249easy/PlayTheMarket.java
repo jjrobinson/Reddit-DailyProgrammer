@@ -3,7 +3,6 @@
  */
 package challenge249easy;
 
-import common.Price;
 import common.ChallengeInput;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,64 +52,44 @@ public class PlayTheMarket {
     public static void main(String[] args){
         ChallengeInput in = new ChallengeInput();
         ArrayList<String> input = in.getInputByLines(PlayTheMarket.class, "/data/challenge249easy.txt");
-        ArrayList<Double> ticks = new ArrayList<Double>();
-
+        
+        ArrayList<Float> ticks = new ArrayList<Float>();
         for(String game : input){//each test will be an iteration
+            ticks.clear();
             String[] p1 = game.split(" ");
             ArrayList<String> p2 = new ArrayList<String>(Arrays.asList(p1));
-            ArrayList<Double> smartTrades = null;
+            
             for(String s : p2){//
-                ticks.add(Double.parseDouble(s));
-                double firstTrade = ticks.remove(0);
-                smartTrades = processTrades(ticks, firstTrade, firstTrade, 0.0);
+                ticks.add(Float.parseFloat(s));
             }
+            System.out.println(processTrades(ticks));
         }
-        
-//        ArrayList<Integer> prices = parseToCents(input);//prices in cents
-//        
-//        for(Price p : prices){
-//            if (debug) System.out.println("Price: "+p);
-//        }
-        
-        
-        
-        
         
     }//end of main
     
-//    private static ArrayList<Integer> parseToCents(ArrayList<String> in){
-//        ArrayList<Integer> out = new ArrayList<Integer>();
-//        try{
-//            for(String s : in){
-//                if (debug) System.out.println("Converting: \""+s+"\"");
-//                int d = 0; int c = 0;int cents = 0;
-//                String[] priceString = s.split("\\.");
-//                if(priceString.length > 0) {
-//                    d = Integer.parseInt(priceString[0]);
-//                    c = Integer.parseInt(priceString[1]);
-//                    cents = (d*100) + c;
-//                } else {
-//                    System.out.println("ERROR: not enough numbers in this string to parse into a price.");
-//                }
-//                out.add(cents);
-//            }
-//            //done looping through all input
-//            
-//        } catch (Exception e){
-//            System.out.println("ERROR: Exception: " + e);
-//        }
-//        return out;
-//    }
     
     
-    private static ArrayList<Double> processTrades(ArrayList<Double> ticks, double high, double low, double diff){
-        if (ticks.size()>1){
-            //increase by 2
-            double trade1 = ticks.remove(0);
-            double trade2 = ticks.remove(0);
-            if (trade1 > high)
-        }
-        return null;
-    }
+    private static String processTrades(ArrayList<Float> ticks){
+        
+        float tempHigh = ticks.get(0);
+        float tempLow = tempHigh;
+        float tempDiff = 0f;
+        int size = ticks.size();
 
+        for(int i=0;i<size;i++){
+            float tempI = ticks.get(i);
+            //for each tick, find a larger difference in any of the following +2 ticks
+            for (int j=i+2;j<size;j++){
+                float tempJ = ticks.get(j);
+                if ((tempJ - tempI)> tempDiff ){
+                    tempHigh = tempJ;
+                    tempLow = tempI;
+                    tempDiff = tempHigh - tempLow;
+                }
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("Buy: ").append(tempLow).append(" Sell: ").append(tempHigh);
+        return sb.toString();
+    }
 }

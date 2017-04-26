@@ -78,7 +78,7 @@ package challenge291;
 
 import challenge251.easy.Nonogram;
 import static challenge293.easy.DefusingTheBomb.printTotals;
-import common.ChallengeInput;
+import org.jjrobinson.util.fileio.ChallengeInput;
 import java.util.ArrayList;
 
 /**

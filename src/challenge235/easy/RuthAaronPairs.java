@@ -3,9 +3,9 @@
  */
 package challenge235.easy;
 
-import common.ChallengeInput;
-import common.EncapsulatedDataParser;
-import common.FactorFinder;
+import org.jjrobinson.util.fileio.ChallengeInput;
+import org.jjrobinson.util.EncapsulatedDataParser;
+import org.jjrobinson.util.FactorFinder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeSet;

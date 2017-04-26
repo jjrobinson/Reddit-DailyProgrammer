@@ -1,0 +1,23 @@
+[2017-01-28] Challenge #300 [Hard] Let's make some noise part 3
+submitted 27 days ago by fvandepitte 0 0
+Description
+
+As the final part we are going to combine part 1 and part 2
+The sequence we generate shall be the tones for our instruments.
+Formal Inputs & Outputs
+
+Input description
+
+An instrument wich you need to generate sound for and a rule for generating the sequence.
+Example 1
+
+'7-stringed guitar' 201
+Example 2
+
+'mandolin' 91
+Output description
+
+Music, hopefully...
+Notes/Hints
+
+The tones for the instruments can be found here "https://en.wikipedia.org/wiki/Standard_tuning"

@@ -166,7 +166,9 @@ atomic weight?
 */
 package challenge302.easy;
 
-import common.ChallengeInput;
+import org.jjrobinson.util.fileio.ChallengeInput;
+import org.jjrobinson.util.chem.PeriodicTable;
+import org.jjrobinson.util.*;
 import java.util.ArrayList;
 
 /**

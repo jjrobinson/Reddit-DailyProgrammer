@@ -3,7 +3,7 @@
  */
 package challenge230.easy;
 
-import common.ChallengeInput;
+import org.jjrobinson.util.fileio.ChallengeInput;
 
 /**
  * [2015-08-31] Challenge #230 [Easy] JSON treasure hunt

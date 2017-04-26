@@ -3,7 +3,7 @@
  */
 package challenge243.easy;
 
-import common.FactorFinder;
+import org.jjrobinson.util.FactorFinder;
 import java.util.ArrayList;
 import java.util.Collections;
 

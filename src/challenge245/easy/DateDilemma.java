@@ -3,7 +3,7 @@
  */
 package challenge245.easy;
 
-import common.ChallengeInput;
+import org.jjrobinson.util.fileio.ChallengeInput;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

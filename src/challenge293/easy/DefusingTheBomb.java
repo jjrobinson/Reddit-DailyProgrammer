@@ -7,7 +7,7 @@ package challenge293.easy;
 
 
 import challenge251.easy.Nonogram;
-import common.ChallengeInput;
+import org.jjrobinson.util.fileio.ChallengeInput;
 import java.util.ArrayList;
 
 /**

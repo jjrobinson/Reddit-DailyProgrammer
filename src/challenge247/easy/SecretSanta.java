@@ -3,7 +3,7 @@
  */
 package challenge247.easy;
 
-import common.ChallengeInput;
+import org.jjrobinson.util.fileio.ChallengeInput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;

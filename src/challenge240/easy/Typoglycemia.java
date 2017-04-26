@@ -3,9 +3,9 @@
  */
 package challenge240.easy;
 
-import common.BagOf;
-import common.BagOfLetters;
-import common.ChallengeInput;
+import org.jjrobinson.util.BagOf;
+import org.jjrobinson.util.BagOfLetters;
+import org.jjrobinson.util.fileio.ChallengeInput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
